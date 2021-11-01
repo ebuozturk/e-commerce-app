@@ -29,7 +29,8 @@ public class OrderConverter {
                             orderItem.getQuantity(),
                             productConverter.convert(orderItem.getProduct())
                     );
-                }).collect(Collectors.toList())
+                }).collect(Collectors.toList()),
+                order.getStatus().toString()
         );
     }
     public List<OrderDto> convert(List<Order> orderList){

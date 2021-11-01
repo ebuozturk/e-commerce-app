@@ -7,5 +7,6 @@ data class OrderDto @JvmOverloads constructor(
     val id:Long,
     val createdDate: LocalDateTime,
     val totalPrice: Double,
-    val items: List<OrderItemDto>
+    val items: List<OrderItemDto>,
+    val status:String
 ){}

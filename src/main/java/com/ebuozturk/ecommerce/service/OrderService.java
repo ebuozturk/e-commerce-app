@@ -3,10 +3,7 @@ package com.ebuozturk.ecommerce.service;
 import com.ebuozturk.ecommerce.converter.OrderConverter;
 import com.ebuozturk.ecommerce.dto.order.OrderDto;
 import com.ebuozturk.ecommerce.dto.orderitem.OrderItemDto;
-import com.ebuozturk.ecommerce.model.Basket;
-import com.ebuozturk.ecommerce.model.Order;
-import com.ebuozturk.ecommerce.model.OrderItem;
-import com.ebuozturk.ecommerce.model.User;
+import com.ebuozturk.ecommerce.model.*;
 import com.ebuozturk.ecommerce.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +59,22 @@ public class OrderService {
         return converter.convert(findByUserId(userId));
     }
 
+    public OrderDto updateStatus(Long orderId, Status status){
+        Order order = findById(orderId);
+        Order updateOrder =  new Order(order.getId(),
+                order.getCreatedDate(),
+                order.getTotalPrice(),
+                order.getOrderItems(),
+                order.getUser(),
+                status);
+        return converter.convert(repository.save(updateOrder));
+    }
+
     protected List<Order> findByUserId(Long userId){
         return repository.findByUser_id(userId);
+    }
+
+    protected Order findById(Long id){
+        return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Bulamadık"));
     }
 }

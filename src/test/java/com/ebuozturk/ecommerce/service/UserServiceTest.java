@@ -2,9 +2,9 @@ package com.ebuozturk.ecommerce.service;
 
 import com.ebuozturk.ecommerce.TestSupport;
 import com.ebuozturk.ecommerce.converter.UserConverter;
-import com.ebuozturk.ecommerce.dto.CreateUserRequest;
-import com.ebuozturk.ecommerce.dto.UpdateUserRequest;
-import com.ebuozturk.ecommerce.dto.UserDto;
+import com.ebuozturk.ecommerce.dto.user.CreateUserRequest;
+import com.ebuozturk.ecommerce.dto.user.UpdateUserRequest;
+import com.ebuozturk.ecommerce.dto.user.UserDto;
 import com.ebuozturk.ecommerce.model.User;
 import com.ebuozturk.ecommerce.exception.UserNotFoundException;
 import com.ebuozturk.ecommerce.repository.UserRepository;
@@ -21,11 +21,13 @@ class UserServiceTest extends TestSupport {
     private UserConverter converter;
     private UserRepository userRepository;
     private UserService userService;
+    private BasketService basketService;
     @BeforeEach
     void setUp() {
        converter = mock(UserConverter.class);
        userRepository = mock(UserRepository.class);
-       userService = new UserService(userRepository,converter);
+       basketService = mock(BasketService.class);
+       userService = new UserService(userRepository,converter, basketService);
     }
 
     @Test
@@ -102,7 +104,7 @@ class UserServiceTest extends TestSupport {
     @Test
     public void testCreateUser_itShouldReturnCreatedUserDto(){
         CreateUserRequest request = new CreateUserRequest("createName","createName","createName","createEmail");
-        User user = new User("createName","createName","createName","createEmail",false);
+        User user = new User("createName","createName","createName","createEmail");
         User savedUser = new User(1L,"createName","createName","createName","createEmail",false);
         UserDto userDTO = new UserDto("createName","createName","createName","createEmail");
         when(userRepository.save(user)).thenReturn(savedUser);

@@ -1,6 +1,6 @@
 package com.ebuozturk.ecommerce.converter;
 
-import com.ebuozturk.ecommerce.dto.CategoryDto;
+import com.ebuozturk.ecommerce.dto.category.CategoryDto;
 import com.ebuozturk.ecommerce.model.Category;
 import org.springframework.stereotype.Component;
 

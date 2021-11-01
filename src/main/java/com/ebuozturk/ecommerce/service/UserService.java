@@ -1,11 +1,11 @@
 package com.ebuozturk.ecommerce.service;
 
 import com.ebuozturk.ecommerce.converter.UserConverter;
-import com.ebuozturk.ecommerce.dto.UserDto;
+import com.ebuozturk.ecommerce.dto.user.UserDto;
 import com.ebuozturk.ecommerce.model.User;
 import com.ebuozturk.ecommerce.exception.UserNotFoundException;
-import com.ebuozturk.ecommerce.dto.CreateUserRequest;
-import com.ebuozturk.ecommerce.dto.UpdateUserRequest;
+import com.ebuozturk.ecommerce.dto.user.CreateUserRequest;
+import com.ebuozturk.ecommerce.dto.user.UpdateUserRequest;
 import com.ebuozturk.ecommerce.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserConverter converter;
+    private final BasketService basketService;
 
-    public UserService(UserRepository userRepository, UserConverter converter) {
+    public UserService(UserRepository userRepository, UserConverter converter, BasketService basketService) {
         this.userRepository = userRepository;
         this.converter = converter;
+        this.basketService = basketService;
     }
 
     public UserDto createUser(final CreateUserRequest createUser){
@@ -27,10 +29,11 @@ public class UserService {
                 createUser.getFirstName(),
                 createUser.getMiddleName(),
                 createUser.getLastName(),
-                createUser.getEmail(),
-                false
+                createUser.getEmail()
                 );
-        return converter.convert(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        basketService.createBasket(savedUser);
+        return converter.convert(savedUser);
     }
 
     public List<UserDto> getAllUsers(){

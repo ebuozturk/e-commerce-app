@@ -1,9 +1,9 @@
 package com.ebuozturk.ecommerce.controller;
 
 
-import com.ebuozturk.ecommerce.dto.CartDto;
-import com.ebuozturk.ecommerce.dto.CreateCartRequest;
-import com.ebuozturk.ecommerce.dto.UpdateCartRequest;
+import com.ebuozturk.ecommerce.dto.cart.CartDto;
+import com.ebuozturk.ecommerce.dto.cart.CreateCartRequest;
+import com.ebuozturk.ecommerce.dto.cart.UpdateCartRequest;
 import com.ebuozturk.ecommerce.service.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

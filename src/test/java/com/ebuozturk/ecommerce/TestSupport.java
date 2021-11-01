@@ -1,7 +1,7 @@
 package com.ebuozturk.ecommerce;
 
-import com.ebuozturk.ecommerce.dto.AddressDto;
-import com.ebuozturk.ecommerce.dto.UserDto;
+import com.ebuozturk.ecommerce.dto.address.AddressDto;
+import com.ebuozturk.ecommerce.dto.user.UserDto;
 import com.ebuozturk.ecommerce.model.Address;
 import com.ebuozturk.ecommerce.model.User;
 

@@ -1,9 +1,9 @@
 package com.ebuozturk.ecommerce.service;
 
 import com.ebuozturk.ecommerce.converter.ProductConverter;
-import com.ebuozturk.ecommerce.dto.CreateProductRequest;
-import com.ebuozturk.ecommerce.dto.ProductDto;
-import com.ebuozturk.ecommerce.dto.UpdateProductRequest;
+import com.ebuozturk.ecommerce.dto.product.CreateProductRequest;
+import com.ebuozturk.ecommerce.dto.product.ProductDto;
+import com.ebuozturk.ecommerce.dto.product.UpdateProductRequest;
 import com.ebuozturk.ecommerce.exception.ProductNotFoundException;
 import com.ebuozturk.ecommerce.model.Category;
 import com.ebuozturk.ecommerce.model.Product;

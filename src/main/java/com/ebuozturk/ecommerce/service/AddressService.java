@@ -1,9 +1,9 @@
 package com.ebuozturk.ecommerce.service;
 
 import com.ebuozturk.ecommerce.converter.AddressConverter;
-import com.ebuozturk.ecommerce.dto.AddressDto;
-import com.ebuozturk.ecommerce.dto.CreateAddressRequest;
-import com.ebuozturk.ecommerce.dto.UpdateAddressRequest;
+import com.ebuozturk.ecommerce.dto.address.AddressDto;
+import com.ebuozturk.ecommerce.dto.address.CreateAddressRequest;
+import com.ebuozturk.ecommerce.dto.address.UpdateAddressRequest;
 import com.ebuozturk.ecommerce.exception.AddressNotFoundException;
 import com.ebuozturk.ecommerce.model.Address;
 import com.ebuozturk.ecommerce.model.User;
@@ -57,7 +57,7 @@ public class AddressService {
         if(doesAddressExist(id)){
             addressRepository.deleteById(id);
         }else
-            new AddressNotFoundException("Address is not found by following id: "+id);
+            throw new AddressNotFoundException("Address is not found by following id: "+id);
     }
 
     public AddressDto getAddressById(Long id){

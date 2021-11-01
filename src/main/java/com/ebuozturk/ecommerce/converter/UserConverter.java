@@ -1,6 +1,6 @@
 package com.ebuozturk.ecommerce.converter;
 
-import com.ebuozturk.ecommerce.dto.UserDto;
+import com.ebuozturk.ecommerce.dto.user.UserDto;
 import com.ebuozturk.ecommerce.model.User;
 import org.springframework.stereotype.Component;
 

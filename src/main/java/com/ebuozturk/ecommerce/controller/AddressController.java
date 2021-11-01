@@ -1,8 +1,8 @@
 package com.ebuozturk.ecommerce.controller;
 
-import com.ebuozturk.ecommerce.dto.AddressDto;
-import com.ebuozturk.ecommerce.dto.CreateAddressRequest;
-import com.ebuozturk.ecommerce.dto.UpdateAddressRequest;
+import com.ebuozturk.ecommerce.dto.address.AddressDto;
+import com.ebuozturk.ecommerce.dto.address.CreateAddressRequest;
+import com.ebuozturk.ecommerce.dto.address.UpdateAddressRequest;
 import com.ebuozturk.ecommerce.service.AddressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

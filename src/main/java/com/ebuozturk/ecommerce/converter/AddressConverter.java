@@ -1,6 +1,6 @@
 package com.ebuozturk.ecommerce.converter;
 
-import com.ebuozturk.ecommerce.dto.AddressDto;
+import com.ebuozturk.ecommerce.dto.address.AddressDto;
 import com.ebuozturk.ecommerce.model.Address;
 import org.springframework.stereotype.Component;
 

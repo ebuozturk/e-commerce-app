@@ -2,9 +2,9 @@ package com.ebuozturk.ecommerce.service;
 
 import com.ebuozturk.ecommerce.TestSupport;
 import com.ebuozturk.ecommerce.converter.AddressConverter;
-import com.ebuozturk.ecommerce.dto.AddressDto;
-import com.ebuozturk.ecommerce.dto.CreateAddressRequest;
-import com.ebuozturk.ecommerce.dto.UpdateAddressRequest;
+import com.ebuozturk.ecommerce.dto.address.AddressDto;
+import com.ebuozturk.ecommerce.dto.address.CreateAddressRequest;
+import com.ebuozturk.ecommerce.dto.address.UpdateAddressRequest;
 import com.ebuozturk.ecommerce.exception.AddressNotFoundException;
 import com.ebuozturk.ecommerce.exception.UserNotFoundException;
 import com.ebuozturk.ecommerce.model.Address;

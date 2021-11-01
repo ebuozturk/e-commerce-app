@@ -1,11 +1,9 @@
 package com.ebuozturk.ecommerce.controller;
 
 
-import com.ebuozturk.ecommerce.dto.CreateProductRequest;
-import com.ebuozturk.ecommerce.dto.ProductDto;
-import com.ebuozturk.ecommerce.dto.UpdateProductRequest;
-import com.ebuozturk.ecommerce.model.Product;
-import com.ebuozturk.ecommerce.service.CategoryService;
+import com.ebuozturk.ecommerce.dto.product.CreateProductRequest;
+import com.ebuozturk.ecommerce.dto.product.ProductDto;
+import com.ebuozturk.ecommerce.dto.product.UpdateProductRequest;
 import com.ebuozturk.ecommerce.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -2,9 +2,9 @@ package com.ebuozturk.ecommerce.service;
 
 
 import com.ebuozturk.ecommerce.converter.CartConverter;
-import com.ebuozturk.ecommerce.dto.CartDto;
-import com.ebuozturk.ecommerce.dto.CreateCartRequest;
-import com.ebuozturk.ecommerce.dto.UpdateCartRequest;
+import com.ebuozturk.ecommerce.dto.cart.CartDto;
+import com.ebuozturk.ecommerce.dto.cart.CreateCartRequest;
+import com.ebuozturk.ecommerce.dto.cart.UpdateCartRequest;
 import com.ebuozturk.ecommerce.exception.CartNotFoundException;
 import com.ebuozturk.ecommerce.model.Cart;
 import com.ebuozturk.ecommerce.model.User;

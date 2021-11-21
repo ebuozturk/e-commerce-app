@@ -4,6 +4,7 @@ E-Commerce project.
 
 ## Tools:
 * Java 11
+* Spring Boot
 * Spring Data Jpa
 * Spring Web
 * Spring DevTools
@@ -12,3 +13,8 @@ E-Commerce project.
 * JUnit 5
 * Docker
 * Maven
+* OpenAPI
+* Flyway
+* H2 Database
+* Kotlin 1.3
+* 

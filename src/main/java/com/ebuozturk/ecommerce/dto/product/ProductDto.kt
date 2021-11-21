@@ -3,7 +3,7 @@ package com.ebuozturk.ecommerce.dto.product;
 import com.ebuozturk.ecommerce.dto.category.CategoryDto
 
 data class ProductDto @JvmOverloads constructor(
-    val id: Long,
+    val id: String? = "",
     val name: String,
     val unitPrice: Double,
     val quantityPerUnit: Int,

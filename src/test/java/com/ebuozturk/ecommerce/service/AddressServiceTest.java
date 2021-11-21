@@ -39,12 +39,12 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testCreateAddress_whenUserIdExist_itShouldReturnAddressDto(){
-        Long userId = 1L;
+        String userId = "1";
         User user = generateUser(userId);
         CreateAddressRequest request = new CreateAddressRequest("testName","testNumber","testCountry","testCity","testStreet","testZip",userId);
         Address address = new Address("testName","testNumber","testCountry","testCity","testStreet","testZip",user);
-        Address savedAddress = new Address(1L,"testName","testNumber","testCountry","testCity","testStreet","testZip",user);
-        AddressDto addressDto = new AddressDto(1L,"testName","testNumber","testCountry","testCity","testStreet","testZip");
+        Address savedAddress = new Address("1","testName","testNumber","testCountry","testCity","testStreet","testZip",user);
+        AddressDto addressDto = new AddressDto("1","testName","testNumber","testCountry","testCity","testStreet","testZip");
         when(userService.findById(userId)).thenReturn(user);
         when(repository.save(address)).thenReturn(savedAddress);
         when(converter.convert(savedAddress)).thenReturn(addressDto);
@@ -60,7 +60,7 @@ class AddressServiceTest extends TestSupport {
     }
     @Test
     public void testCreateAddress_whenUserIdNotExist_itShouldThrowUserNotFound(){
-        Long userId = 1L;
+        String userId = "1";
         CreateAddressRequest request = new CreateAddressRequest("testName","testNumber","testCountry","testCity","testStreet","testZip",userId);
         when(userService.findById(userId)).thenThrow(new UserNotFoundException("sdfsd"));
 
@@ -74,21 +74,21 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testUpdateAddress_whenAddressIdExistAndUserIdExist_itShouldReturnAddressDto(){
-        Long userId =1L;
-        Long addressId=1L;
+        String userId = "1";
+        String addressId="1";
         User user = new User(userId,"createName","createName","createName","createEmail",true);
-        UpdateAddressRequest request = new UpdateAddressRequest(addressId,"updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
+        UpdateAddressRequest request = new UpdateAddressRequest("updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
         Address address = new Address(addressId,"testName","testNumber","testCountry","testCity","testStreet","testZip",user);
         Address saveAddress = new Address(addressId,"updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",user);
         Address updatedAddress = new  Address(addressId,"updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",user);
         AddressDto addressDto =  new AddressDto(addressId,"updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip");
 
         when(userService.findById(request.getUserId())).thenReturn(user);
-        when(repository.findById(request.getId())).thenReturn(Optional.of(address));
+        when(repository.findById(addressId)).thenReturn(Optional.of(address));
         when(repository.save(saveAddress)).thenReturn(updatedAddress);
         when(converter.convert(updatedAddress)).thenReturn(addressDto);
 
-        AddressDto result = service.updateAddress(request);
+        AddressDto result = service.updateAddress(addressId,request);
 
         assertEquals(result,addressDto);
 
@@ -99,12 +99,12 @@ class AddressServiceTest extends TestSupport {
     }
     @Test
     public void testUpdateAddress_whenAddressIdExistAndUserIdNotExist_itShouldThrowUserNotFoundException(){
-        Long userId =1L;
-        Long addressId=1L;
-        UpdateAddressRequest request = new UpdateAddressRequest(addressId,"updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
+        String userId = "1";
+        String addressId="1";
+        UpdateAddressRequest request = new UpdateAddressRequest("updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
 
         when(userService.findById(request.getUserId())).thenThrow(new UserNotFoundException("message"));
-        assertThrows(UserNotFoundException.class,()-> service.updateAddress(request));
+        assertThrows(UserNotFoundException.class,()-> service.updateAddress(addressId,request));
 
         verify(userService).findById(userId);
         verifyNoInteractions(repository);
@@ -113,15 +113,15 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testUpdateAddress_whenAddressIdNotExistAndUserIdExist_itShouldThrowAddressNotFoundException(){
-        Long userId =1L;
-        Long addressId=1L;
+        String userId = "1";
+        String addressId="1";
         User user = new User(userId,"createName","createName","createName","createEmail",true);
-        UpdateAddressRequest request = new UpdateAddressRequest(addressId,"updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
+        UpdateAddressRequest request = new UpdateAddressRequest("updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
 
         when(userService.findById(request.getUserId())).thenReturn(user);
-        when(repository.findById(request.getId())).thenReturn(Optional.empty());
+        when(repository.findById(addressId)).thenReturn(Optional.empty());
 
-        assertThrows(AddressNotFoundException.class,()->service.updateAddress(request));
+        assertThrows(AddressNotFoundException.class,()->service.updateAddress(addressId,request));
 
         verify(userService).findById(userId);
         verify(repository).findById(addressId);
@@ -131,14 +131,14 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testUpdateAddress_whenAddressIdNotExistAndUserIdNotExist_itShouldThrowUserNotFoundException(){
-        Long userId =1L;
-        Long addressId=1L;
-        UpdateAddressRequest request = new UpdateAddressRequest(addressId,"updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
+        String userId = "1";
+        String addressId="1";
+        UpdateAddressRequest request = new UpdateAddressRequest("updateName","updateNumber","updateCountry","updateCity","updateStreet","updateZip",userId);
 
         when(userService.findById(request.getUserId())).thenThrow(new UserNotFoundException("message"));
         when(repository.findById(addressId)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class,()-> service.updateAddress(request));
+        assertThrows(UserNotFoundException.class,()-> service.updateAddress(addressId,request));
 
         verify(userService).findById(userId);
         verifyNoInteractions(repository);
@@ -147,8 +147,8 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testGetAddressById_whenAddressIdExist_itShouldReturnAddressDto(){
-        Long addressId = 1L;
-        User user = new User(1L,"createName","createName","createName","createEmail",true);
+        String addressId = "1";
+        User user = new User("1","createName","createName","createName","createEmail",true);
         Address address = new Address(addressId,"testName","testNumber","testCountry","testCity","testStreet","testZip",user);
         AddressDto addressDto =  new AddressDto(addressId,"testName","testNumber","testCountry","testCity","testStreet","testZip");
 
@@ -166,7 +166,7 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testGetAddressById_whenAddressIdNotExist_itShouldThrowAddressNotFoundException(){
-        Long addressId = 1L;
+        String addressId = "1";
 
         when(repository.findById(addressId)).thenThrow(new AddressNotFoundException("message"));
 
@@ -181,8 +181,8 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testGetAllAddresses_itShouldReturnAddressDtoList(){
-        User user = new User(1L,"createName","createName","createName","createEmail",true);
-        List<Address> addressList = IntStream.range(0,5).mapToObj(i->new Address((long)i,"testName"+i,"testNumber"+i,"testCountry"+i,"testCity"+i,"testStreet"+i,"testZip"+i,user)).collect(Collectors.toList());
+        User user = new User("1","createName","createName","createName","createEmail",true);
+        List<Address> addressList = IntStream.range(0,5).mapToObj(i->new Address(String.valueOf(i),"testName"+i,"testNumber"+i,"testCountry"+i,"testCity"+i,"testStreet"+i,"testZip"+i,user)).collect(Collectors.toList());
         List<AddressDto> addressDtoList = generateAddressDtoList(addressList);
         when(repository.findAll()).thenReturn(addressList);
         when(converter.convert(addressList)).thenReturn(addressDtoList);
@@ -198,16 +198,16 @@ class AddressServiceTest extends TestSupport {
 
     @Test
     public void testGetAddressesByUserId_itShouldReturnAddressDtoList(){
-        User user = new User(1L,"createName","createName","createName","createEmail",true);
-        List<Address> addressList = IntStream.range(0,5).mapToObj(i->new Address((long)i,"testName"+i,"testNumber"+i,"testCountry"+i,"testCity"+i,"testStreet"+i,"testZip"+i,user)).collect(Collectors.toList());
+        User user = new User("1","createName","createName","createName","createEmail",true);
+        List<Address> addressList = IntStream.range(0,5).mapToObj(i->new Address(String.valueOf(i),"testName"+i,"testNumber"+i,"testCountry"+i,"testCity"+i,"testStreet"+i,"testZip"+i,user)).collect(Collectors.toList());
         List<AddressDto> addressDtoList = generateAddressDtoList(addressList);
-        when(repository.findAddressByUser_id(1L)).thenReturn(addressList);
+        when(repository.findAddressByUser_id("1")).thenReturn(addressList);
         when(converter.convert(addressList)).thenReturn(addressDtoList);
 
-        List<AddressDto> result = service.getAddressesByUserId(1L);
+        List<AddressDto> result = service.getAddressesByUserId("1");
         assertEquals(result,addressDtoList);
 
-        verify(repository).findAddressByUser_id(1L);
+        verify(repository).findAddressByUser_id("1");
         verify(converter).convert(addressList);
 
     }

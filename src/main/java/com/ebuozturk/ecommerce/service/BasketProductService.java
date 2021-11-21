@@ -18,41 +18,41 @@ public class BasketProductService {
         this.converter = converter;
     }
 
-    public BasketProductDto update(BasketProduct product){
+    public BasketProductDto updateBasketProduct(BasketProduct product){
         return converter.convert(repository.save(product));
     }
 
     public BasketProductDto createBasketProduct(BasketProduct basketProduct) {
         return converter.convert(repository.save(basketProduct));
     }
-    public void deleteBasketProduct(Long id){
+    public void deleteBasketProduct(String id){
         findById(id);
         repository.deleteById(id);
     }
-    public BasketProductDto increaseQuantityByProductId(Long id){
+    public BasketProductDto increaseQuantityByProductId(String id){
         BasketProduct basketProduct = findById(id);
         basketProduct.increaseQuantity();
         return converter.convert(repository.save(basketProduct));
     }
 
-    public BasketProductDto decreaseQuantityByProductId(Long id){
+    public BasketProductDto decreaseQuantityByProductId(String id){
         BasketProduct basketProduct = findById(id);
         basketProduct.decreaseQuantity();
         return converter.convert(repository.save(basketProduct));
     }
-    protected BasketProduct findById(Long id) {
+    protected BasketProduct findById(String id) {
         return repository.findById(id).orElseThrow(()-> new BasketProductNotFoundException("The product of basket couldn't be found by following id: "+id));
     }
-    protected BasketProduct findByProductIdAndBasketId(Long productId,Long basketId){
+    protected BasketProduct findByProductIdAndBasketId(String productId,String basketId){
         return repository.findByProduct_idAndBasket_id(productId,basketId).orElseThrow(()-> new BasketProductNotFoundException("The product of basket couldn't be found" +
                 " by following product id: "+productId+" and basket id: "+basketId));
 
     }
-    protected boolean isBasketProductExist(Long id){
+    protected boolean isBasketProductExist(String id){
 
         return repository.existsBasketProductById(id);
     }
-    protected boolean isBasketProductExistByProductIdAndBasketId(Long productId,Long basketId){
+    protected boolean isBasketProductExistByProductIdAndBasketId(String productId,String basketId){
         return repository.existsBasketProductByProduct_IdAndBasket_Id(productId,basketId);
     }
 }

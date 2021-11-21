@@ -2,15 +2,14 @@ package com.ebuozturk.ecommerce.service;
 
 import com.ebuozturk.ecommerce.converter.OrderConverter;
 import com.ebuozturk.ecommerce.dto.order.OrderDto;
-import com.ebuozturk.ecommerce.dto.orderitem.OrderItemDto;
+import com.ebuozturk.ecommerce.exception.EmptyBasketException;
+import com.ebuozturk.ecommerce.exception.OrderNotFoundException;
 import com.ebuozturk.ecommerce.model.*;
 import com.ebuozturk.ecommerce.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -20,61 +19,83 @@ public class OrderService {
     private final UserService userService;
     private final OrderItemService orderItemService;
     private final OrderConverter converter;
+    private final AddressService addressService;
 
-    public OrderService(OrderRepository repository, BasketService basketService, UserService userService, OrderItemService orderItemService, OrderConverter converter) {
+    public OrderService(OrderRepository repository, BasketService basketService, UserService userService, OrderItemService orderItemService, OrderConverter converter, AddressService addressService) {
         this.repository = repository;
         this.basketService = basketService;
         this.userService = userService;
         this.orderItemService = orderItemService;
         this.converter = converter;
+        this.addressService = addressService;
     }
 
 
-    public List<OrderDto> placeOrder(Long userId){
-        User user = userService.findById(userId);
+    public OrderDto getOrderById(String id){
+        return converter.convert(findById(id));
+    }
 
+    public List<OrderDto> getAllByUserId(String id) {
+        return converter.convert(findByUserId(id));
+    }
+
+    public OrderDto placeOrder(String userId,String addressId){
+        User user = userService.findById(userId);
+        Address address = addressService.findById(addressId);
         Basket basket = basketService.findByUserId(userId);
 
-        Order newOrder = new Order(
-                LocalDateTime.now(),
-                basketService.calculateTotalPrice(basket),
-                user
+        if(basket.getProducts().size()>0){
+            Order newOrder = new Order(
+                    LocalDateTime.now(),
+                    basketService.calculateTotalPrice(basket),
+                    address,
+                    user
+            );
+
+            basket.getProducts().stream().forEach(basketProduct -> {
+
+                OrderItem orderItem = new OrderItem(
+                        basketProduct.getQuantity(),
+                        basketProduct.getProduct().getUnitPrice(),
+                        LocalDateTime.now(),
+                        newOrder,
+                        basketProduct.getProduct()
                 );
 
-        Set<OrderItem> orderItems = basket.getProducts().stream().map(product -> {
-            OrderItem orderItem = new OrderItem(
-                    product.getQuantity(),
-                    product.getProduct().getUnitPrice(),
-                    LocalDateTime.now(),
-                    newOrder,
-                    product.getProduct()
-            );
-            newOrder.getOrderItems().add(orderItem);
-            basketService.removeProductFromBasket(userId,product.getId());
-            return orderItem;
+                newOrder.getOrderItems().add(orderItem);
+                basketService.removeProductFromBasket(userId,basketProduct.getProduct().getId());
 
-        }).collect(Collectors.toSet());
+            });
+            return converter.convert(repository.save(newOrder));
+        }
+        else{
+            throw new EmptyBasketException("There is no product in basket!");
+        }
 
-        orderItems.forEach(orderItemService::saveOrderItem);
-        return converter.convert(findByUserId(userId));
     }
 
-    public OrderDto updateStatus(Long orderId, Status status){
+    public OrderDto updateStatus(String orderId, Status status){
         Order order = findById(orderId);
         Order updateOrder =  new Order(order.getId(),
                 order.getCreatedDate(),
                 order.getTotalPrice(),
+                order.getOrderAddress(),
                 order.getOrderItems(),
                 order.getUser(),
                 status);
         return converter.convert(repository.save(updateOrder));
     }
 
-    protected List<Order> findByUserId(Long userId){
+    public void deleteOrderById(String id) {
+        Order  order = findById(id);
+        repository.delete(order);
+    }
+    protected List<Order> findByUserId(String userId){
         return repository.findByUser_id(userId);
     }
 
-    protected Order findById(Long id){
-        return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Bulamadık"));
+    protected Order findById(String id){
+        return repository.findById(id).orElseThrow(()-> new OrderNotFoundException("The order couldn't be found by following id: "+id));
     }
+
 }

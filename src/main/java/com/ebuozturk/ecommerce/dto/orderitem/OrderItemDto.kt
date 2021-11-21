@@ -4,7 +4,7 @@ import com.ebuozturk.ecommerce.dto.product.ProductDto
 import java.time.LocalDateTime
 
 data class OrderItemDto @JvmOverloads constructor (
-    val id:Long,
+    val id: String? = "",
     val createdDate:LocalDateTime,
     val quantity:Int,
     val product:ProductDto

@@ -4,6 +4,8 @@ import com.ebuozturk.ecommerce.model.OrderItem;
 import com.ebuozturk.ecommerce.repository.OrderItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderItemService {
 
@@ -15,5 +17,9 @@ public class OrderItemService {
 
     public void saveOrderItem(OrderItem orderItem){
         repository.save(orderItem);
+    }
+
+    protected List<OrderItem> saveAllOrderItems(List<OrderItem> orderItemList){
+        return repository.saveAll(orderItemList);
     }
 }

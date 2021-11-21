@@ -38,16 +38,16 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByMail(mail));
     }
     @GetMapping("/{id}/id")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") String id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
     @GetMapping("{id}/address")
-    public ResponseEntity<List<AddressDto>> getUsersAddresses(@PathVariable("id") Long id){
+    public ResponseEntity<List<AddressDto>> getUsersAddresses(@PathVariable("id") String id){
 
         return ResponseEntity.ok(addressService.getAddressesByUserId(id));
     }
     @GetMapping("{id}/cart")
-    public ResponseEntity<List<CartDto>> getUsersCarts(@PathVariable("id") Long id){
+    public ResponseEntity<List<CartDto>> getUsersCarts(@PathVariable("id") String id){
         return ResponseEntity.ok(cartService.getCartsByUserId(id));
     }
     @PostMapping
@@ -56,24 +56,24 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UpdateUserRequest request){
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") String id, @RequestBody UpdateUserRequest request){
 
         return ResponseEntity.ok(userService.updateUser(id,request));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> deactivateUser(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deactivateUser(@PathVariable("id") String id){
         userService.deactivateUser(id);
         return ResponseEntity.ok().build();
     }
     @PatchMapping("/{id}/activate")
-    public ResponseEntity<Void> activateUser(@PathVariable("id") Long id){
+    public ResponseEntity<Void> activateUser(@PathVariable("id") String id){
         userService.activateUser(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id){
 
         userService.deleteUser(id);
         return ResponseEntity.ok().build();

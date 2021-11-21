@@ -6,6 +6,6 @@ data class CreateProductRequest @JvmOverloads constructor(
     val unitPrice:Double,
     val quantityPerUnit:Int,
     val unitsInStock:Int,
-    val categoryId:Long,
+    val categoryId:String,
 ) {
 }

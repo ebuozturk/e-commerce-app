@@ -26,14 +26,14 @@ public class ProductService {
         this.categoryService = categoryService;
     }
 
-    public ProductDto getProductById(Long id){
+    public ProductDto getProductById(String id){
         return productConverter.convert(findById(id));
     }
     public List<ProductDto> getAllProducts(){
         return productConverter.convert(productRepository.findAll());
     }
 
-    public List<ProductDto> getProductsByCategoryId(Long categoryId){
+    public List<ProductDto> getProductsByCategoryId(String categoryId){
         categoryService.findById(categoryId);
         return productConverter.convert(productRepository.findByCategory_id(categoryId));
     }
@@ -42,22 +42,22 @@ public class ProductService {
         return productConverter.convert(productRepository.save(new Product(request.getName(),
                 request.getUnitPrice(),request.getQuantityPerUnit(), request.getUnitsInStock(),category)));
     }
-    public ProductDto updateProduct(final UpdateProductRequest request){
+    public ProductDto updateProduct(final String id,final UpdateProductRequest request){
         Category category = categoryService.findById(request.getCategoryId());
-        findById(request.getId());
-        return productConverter.convert(productRepository.save(new Product(request.getId(),request.getName(),
+        findById(id);
+        return productConverter.convert(productRepository.save(new Product(id,request.getName(),
                 request.getUnitPrice(),request.getQuantityPerUnit(), request.getUnitsInStock(),category)));
     }
-    public void deleteProduct(Long id){
+    public void deleteProduct(String id){
         if(doesProductExist(id)){
            productRepository.deleteById(id);
         }else
             throw new ProductNotFoundException("Product isn't found by following id: "+id);
     }
-    protected Boolean doesProductExist(Long id){
+    protected Boolean doesProductExist(String id){
         return productRepository.existsById(id);
     }
-    protected Product findById(Long id){
+    protected Product findById(String id){
         return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product isn't found by following id: "+id));
     }
 }

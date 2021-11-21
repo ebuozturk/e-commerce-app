@@ -11,9 +11,10 @@ import java.util.stream.Collectors;
 @Component
 public class OrderConverter {
     private final ProductConverter productConverter;
-
-    public OrderConverter(ProductConverter productConverter) {
+    private final AddressConverter addressConverter;
+    public OrderConverter(ProductConverter productConverter, AddressConverter addressConverter) {
         this.productConverter = productConverter;
+        this.addressConverter = addressConverter;
     }
 
     public OrderDto convert(Order order){
@@ -30,6 +31,7 @@ public class OrderConverter {
                             productConverter.convert(orderItem.getProduct())
                     );
                 }).collect(Collectors.toList()),
+                addressConverter.convert(order.getOrderAddress()),
                 order.getStatus().toString()
         );
     }

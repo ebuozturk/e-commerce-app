@@ -17,7 +17,7 @@ public class BasketController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<BasketDto> getBasketByUserId(@PathVariable("userId") Long userId){
+    public ResponseEntity<BasketDto> getBasketByUserId(@PathVariable("userId") String userId){
         return ResponseEntity.ok(service.getBasketByUserId(userId));
     }
     @GetMapping
@@ -25,13 +25,13 @@ public class BasketController {
         return  ResponseEntity.ok(service.getAllBaskets());
     }
 
-    @PostMapping("/{userId}/{productId}")
-    public ResponseEntity<BasketDto> addProductToUserBasket(@PathVariable("userId") Long userId, @PathVariable("productId") Long productId){
+    @PostMapping
+    public ResponseEntity<BasketDto> addProductToUserBasket(@RequestParam("userId") String userId, @RequestParam("productId") String productId){
 
         return ResponseEntity.ok(service.addProductToBasket(userId,productId));
     }
-    @DeleteMapping("/{userId}/{productId}")
-    public ResponseEntity<Void> removeProductFromUserBasket(@PathVariable("userId") Long userId, @PathVariable("productId") Long productId){
+    @DeleteMapping
+    public ResponseEntity<Void> removeProductFromUserBasket(@RequestParam("userId") String userId, @RequestParam("productId") String productId){
         service.removeProductFromBasket(userId,productId);
         return ResponseEntity.ok().build();
     }

@@ -1,5 +1,6 @@
 package com.ebuozturk.ecommerce.model
 
+import org.hibernate.annotations.GenericGenerator
 import java.time.LocalDateTime
 import javax.persistence.*
 import kotlin.collections.HashSet
@@ -8,10 +9,15 @@ import kotlin.collections.HashSet
 @Table(name = "orders")
 data class Order @JvmOverloads constructor(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long?=null,
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    val id:String? = "",
     val createdDate: LocalDateTime,
     val totalPrice:Double,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id",referencedColumnName = "id")
+    val orderAddress: Address,
 
     @OneToMany(mappedBy = "order" ,cascade = [CascadeType.ALL])
     val orderItems: Set<OrderItem>,
@@ -19,11 +25,12 @@ data class Order @JvmOverloads constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     val user:User,
+
     @Enumerated(EnumType.ORDINAL)
     val status:Status
 
 ){
-    constructor(createdDate: LocalDateTime,totalPrice: Double,user: User): this(null,createdDate,totalPrice,HashSet(),user,Status.PLANNING)
+    constructor(createdDate: LocalDateTime,totalPrice: Double,address: Address,user: User): this("",createdDate,totalPrice,address,HashSet(),user,Status.PLANNING)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -35,6 +42,7 @@ data class Order @JvmOverloads constructor(
         if (createdDate != other.createdDate) return false
         if (totalPrice != other.totalPrice) return false
         if (orderItems != other.orderItems) return false
+        if (orderAddress != other.orderAddress) return false
         if (user != other.user) return false
 
         return true
@@ -45,13 +53,15 @@ data class Order @JvmOverloads constructor(
         result = 31 * result + createdDate.hashCode()
         result = 31 * result + totalPrice.hashCode()
         result = 31 * result + orderItems.hashCode()
+        result = 31 * result + orderAddress.id.hashCode()
         result = 31 * result + user.id.hashCode()
         return result
     }
 
 }
 
+
 enum class Status(){
-    PLANNING, SHIPPING, COMPLETE, UNFULFILLABLE
+    PLANNING, SHIPPING, COMPLETE, CANCELLED,UNFULFILLABLE
 
 }

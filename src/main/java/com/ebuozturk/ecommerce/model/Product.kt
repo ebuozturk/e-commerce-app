@@ -1,13 +1,15 @@
 package com.ebuozturk.ecommerce.model;
 
+import org.hibernate.annotations.GenericGenerator
 import javax.persistence.*;
 
 @Entity
 data class Product @JvmOverloads constructor(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long?=null,
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    val id:String? = "",
     val name: String,
     val unitPrice: Double,
     val quantityPerUnit: Int,

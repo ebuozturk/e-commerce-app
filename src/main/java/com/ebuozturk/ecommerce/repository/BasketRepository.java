@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BasketRepository extends JpaRepository<Basket,Long> {
-    Optional<Basket> findByUser_id(Long id);
+public interface BasketRepository extends JpaRepository<Basket,String> {
+    Optional<Basket> findByUser_id(String id);
 
 }

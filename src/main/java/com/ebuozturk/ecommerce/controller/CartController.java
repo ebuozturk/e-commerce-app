@@ -26,7 +26,7 @@ public class CartController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CartDto> getCartById(@PathVariable("id") Long id){
+    public ResponseEntity<CartDto> getCartById(@PathVariable("id") String id){
         return ResponseEntity.ok(service.getCartById(id));
     }
 
@@ -35,13 +35,13 @@ public class CartController {
         return ResponseEntity.ok(service.createCart(request));
     }
 
-    @PutMapping
-    public ResponseEntity<CartDto> updateCart(@RequestBody UpdateCartRequest request){
-        return ResponseEntity.ok(service.updateCart(request));
+    @PutMapping("{id}")
+    public ResponseEntity<CartDto> updateCart(@PathVariable String id, @RequestBody UpdateCartRequest request){
+        return ResponseEntity.ok(service.updateCart(id,request));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteCart(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteCart(@PathVariable("id") String id){
         service.deleteCart(id);
         return ResponseEntity.ok().build();
     }

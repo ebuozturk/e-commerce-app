@@ -1,12 +1,14 @@
 package com.ebuozturk.ecommerce.model;
 
+import org.hibernate.annotations.GenericGenerator
 import javax.persistence.*;
 
 @Entity
 data class Basket @JvmOverloads constructor(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long? = null,
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    val id:String? = "",
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     val user:User,
@@ -33,9 +35,14 @@ data class Basket @JvmOverloads constructor(
 
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
-        result = 31 * result + user.hashCode()
+        result = 31 * result + user.id.hashCode()
         result = 31 * result + products.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "Basket(id=$id, userId=${user.id}, products=${products.hashCode()})"
+    }
+
 
 }

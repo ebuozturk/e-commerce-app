@@ -4,7 +4,7 @@ import java.util.*
 
 
 data class CartDto @JvmOverloads constructor(
-    val id:Long,
+    val id:String,
     val name:String,
     val no:String,
     val expiryDate: Date,

@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class TestSupport {
 
     public static List<User> generateUsers(){
-        return IntStream.range(0,5).mapToObj(i-> new User((long)i,
+        return IntStream.range(0,5).mapToObj(i-> new User(String.valueOf(i),
                     "firstName"+i,
                     "middleName"+i,
                     "lastName"+i,
@@ -25,16 +25,16 @@ public class TestSupport {
         return userList.stream().map(user-> new UserDto(user.getId(),user.getFirstName(),
                 user.getMiddleName(), user.getLastName(), user.getEmail())).collect(Collectors.toList());
     }
-    public static User generateUser(Long id){
+    public static User generateUser(String id){
        return new User(id,"testName","testName","testName","testMail");
     }
-    public static User generateUser(String mail){
+    public static User generateUserWithMail(String mail){
         return new User("testName","testName","testName",mail);
     }
-    public static UserDto generateUserDto(Long id){
+    public static UserDto generateUserDto(String id){
         return new UserDto(id,"testName","testName","testName","testMail");
     }
-    public static UserDto generateUserDto(String mail){
+    public static UserDto generateUserDtoWithMail(String mail){
         return new UserDto("testName","testName","testName",mail);
     }
     public static List<AddressDto> generateAddressDtoList(List<Address> addressList){

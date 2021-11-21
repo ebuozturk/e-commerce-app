@@ -1,20 +1,20 @@
 package com.ebuozturk.ecommerce.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.annotations.GenericGenerator
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
 data class OrderItem @JvmOverloads constructor(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long?=null,
-
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    val id:String? = "",
     val quantity:Int,
     val price:Double,
     val createdDate: LocalDateTime,
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="order_id",referencedColumnName = "id")
     val order:Order,
 

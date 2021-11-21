@@ -9,6 +9,6 @@ import java.util.Optional;
 
 
 @Repository
-public interface AddressRepository extends JpaRepository<Address,Long> {
-    List<Address> findAddressByUser_id(Long id);
+public interface AddressRepository extends JpaRepository<Address,String> {
+    List<Address> findAddressByUser_id(String id);
 }

@@ -1,5 +1,6 @@
 package com.ebuozturk.ecommerce.model;
 
+import org.hibernate.annotations.GenericGenerator
 import kotlin.jvm.JvmOverloads;
 
 import javax.persistence.*;
@@ -8,8 +9,9 @@ import javax.persistence.*;
 @Entity
 data class Address @JvmOverloads constructor(
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id:Long? = null,
+        @GeneratedValue(generator = "UUID")
+        @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+        val id:String? = "",
         val addressName:String,
         val phoneNumber:String,
         val country:String,
@@ -19,6 +21,7 @@ data class Address @JvmOverloads constructor(
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name="user_id",referencedColumnName = "id")
         val user:User
+
 ) {
 
     override fun equals(other: Any?): Boolean {

@@ -31,17 +31,17 @@ public class BasketService {
     public List<BasketDto> getAllBaskets(){
         return converter.convert(repository.findAll());
     }
-    public BasketDto getBasketById(Long id){
+    public BasketDto getBasketById(String id){
         return converter.convert(findById(id));
     }
-    public BasketDto getBasketByUserId(Long id){
+    public BasketDto getBasketByUserId(String id){
         return converter.convert(findByUserId(id));
     }
     public BasketDto createBasket(User user){
 
         return converter.convert(repository.save(new Basket(user, new HashSet<BasketProduct>())));
     }
-    public BasketDto addProductToBasket(Long userId, Long productId){
+    public BasketDto addProductToBasket(String userId, String productId){
         Basket basket = findByUserId(userId);
 
         Product product = productService.findById(productId);
@@ -66,7 +66,7 @@ public class BasketService {
 
     }
 
-    public BasketDto removeProductFromBasket(Long userId, Long productId){
+    public BasketDto removeProductFromBasket(String userId, String productId){
         Basket basket = findByUserId(userId);
         BasketProduct basketProduct = basketProductService.findByProductIdAndBasketId(productId,basket.getId());
         basketProductService.deleteBasketProduct(basketProduct.getId());
@@ -76,11 +76,11 @@ public class BasketService {
 
         return basket.getProducts().stream().mapToDouble(i -> i.getProduct().getUnitPrice()*i.getQuantity()).sum();
     }
-    protected Basket findByUserId(Long id) {
+    protected Basket findByUserId(String id) {
         return repository.findByUser_id(id).orElseThrow(()-> new BasketNotFoundException("Basket couldn't be found by following user id: "+id));
     }
 
-    protected Basket findById(Long id){
+    protected Basket findById(String id){
         return repository.findById(id).orElseThrow(()-> new BasketNotFoundException("Basket couldn't be found by following id: "+id));
     }
 

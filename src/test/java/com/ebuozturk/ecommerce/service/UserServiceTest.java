@@ -46,7 +46,7 @@ class UserServiceTest extends TestSupport {
 
     @Test
     public void testGetUserById_whenUserIdExist_itShouldReturnUserDto(){
-        Long id = (long)1;
+        String id = "1";
         User user = generateUser(id);
         UserDto userDTO = generateUserDto(id);
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
@@ -61,7 +61,7 @@ class UserServiceTest extends TestSupport {
     }
     @Test
     public void testGetUserById_whenUserIdNotExist_itShouldThrowUserNotFound(){
-        Long id = (long)1;
+        String id = "1";
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,()->
@@ -105,7 +105,7 @@ class UserServiceTest extends TestSupport {
     public void testCreateUser_itShouldReturnCreatedUserDto(){
         CreateUserRequest request = new CreateUserRequest("createName","createName","createName","createEmail");
         User user = new User("createName","createName","createName","createEmail");
-        User savedUser = new User(1L,"createName","createName","createName","createEmail",false);
+        User savedUser = new User("1","createName","createName","createName","createEmail",false);
         UserDto userDTO = new UserDto("createName","createName","createName","createEmail");
         when(userRepository.save(user)).thenReturn(savedUser);
         when(converter.convert(savedUser)).thenReturn(userDTO);
@@ -120,21 +120,22 @@ class UserServiceTest extends TestSupport {
     }
     @Test
     public void testUpdateUser_itShouldReturnUpdatedUserDto(){
+        String id = "1";
         UpdateUserRequest request = new UpdateUserRequest("updateName","updateName","updateName","updateEmail");
-        User user = new User(1L,"createName","createName","createName","createEmail",false);
-        User updateUser = new User(1L,"updateName","updateName","updateName","updateEmail");
-        User savedUser = new User(1L,"updateName","updateName","updateName","updateEmail",false);
+        User user = new User(id,"createName","createName","createName","createEmail",false);
+        User updateUser = new User(id,"updateName","updateName","updateName","updateEmail");
+        User savedUser = new User(id,"updateName","updateName","updateName","updateEmail",false);
         UserDto userDTO = new UserDto("updateName","updateName","updateName","updateEmail");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
         when(userRepository.save(updateUser)).thenReturn(savedUser);
         when(converter.convert(savedUser)).thenReturn(userDTO);
 
-        UserDto result = userService.updateUser(1L,request);
+        UserDto result = userService.updateUser(id,request);
 
         assertEquals(userDTO,result);
         verify(userRepository).save(updateUser);
-        verify(userRepository).findById(1L);
+        verify(userRepository).findById(id);
         verify(converter).convert(savedUser);
 
 
@@ -142,13 +143,14 @@ class UserServiceTest extends TestSupport {
 
     @Test
     public void testUpdateUser_whenUserIdNotExist_itShouldThrowUserNotFound(){
+        String id = "1";
         UpdateUserRequest request = new UpdateUserRequest("updateName","updateName","updateName","updateEmail");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
 
 
-        assertThrows(UserNotFoundException.class,()->userService.updateUser(1L,request));
-        verify(userRepository).findById(1L);
+        assertThrows(UserNotFoundException.class,()->userService.updateUser(id,request));
+        verify(userRepository).findById(id);
         verifyNoMoreInteractions(userRepository);
         verifyNoInteractions(converter);
 
@@ -157,7 +159,7 @@ class UserServiceTest extends TestSupport {
 
     @Test
     public void testDeleteUser_whenUserIdExist_itShouldReturnVoid(){
-        Long id = 1L;
+        String id = "1";
 
         when(userRepository.existsById(id)).thenReturn(true);
 
@@ -168,7 +170,7 @@ class UserServiceTest extends TestSupport {
 
     @Test
     public void testDeleteUser_whenUserIdNotExist_itShouldThrowUserNotFound(){
-        Long id = 1L;
+        String id = "1";
 
         when(userRepository.existsById(id)).thenReturn(false);
 
@@ -179,7 +181,7 @@ class UserServiceTest extends TestSupport {
 
     @Test
     public void testDeactivateUser_whenUserIdExist_itShouldUpdateUserByNotActive(){
-        Long id = 1L;
+        String id = "1";
         User user = new User(id,"createName","createName","createName","createEmail",true);
         User saveUser = new User(id,"createName","createName","createName","createEmail",false);
 
@@ -187,7 +189,7 @@ class UserServiceTest extends TestSupport {
 
         userService.deactivateUser(id);
 
-        verify(userRepository).findById(1L);
+        verify(userRepository).findById(id);
         verify(userRepository).save(saveUser);
 
 
@@ -195,20 +197,20 @@ class UserServiceTest extends TestSupport {
     }
     @Test
     public void testDeactivateUser_whenUserIdNotExist_itShouldThrowUserNotFound(){
-        Long id = 1L;
+        String id = "1";
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,()->userService.deactivateUser(id));
 
-        verify(userRepository).findById(1L);
+        verify(userRepository).findById(id);
         verifyNoMoreInteractions(userRepository);
 
     }
 
     @Test
     public void testActivateUser_whenUserIdExist_itShouldUpdateUserByActive(){
-        Long id = 1L;
+        String id = "1";
         User user = new User(id,"createName","createName","createName","createEmail",false);
         User saveUser = new User(id,"createName","createName","createName","createEmail",true);
 
@@ -216,7 +218,7 @@ class UserServiceTest extends TestSupport {
 
         userService.activateUser(id);
 
-        verify(userRepository).findById(1L);
+        verify(userRepository).findById(id);
         verify(userRepository).save(saveUser);
 
 
@@ -224,13 +226,12 @@ class UserServiceTest extends TestSupport {
     }
     @Test
     public void testActivateUser_whenUserIdNotExist_itShouldThrowUserNotFound(){
-        Long id = 1L;
-
+        String id = "1";
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,()->userService.activateUser(id));
 
-        verify(userRepository).findById(1L);
+        verify(userRepository).findById(id);
         verifyNoMoreInteractions(userRepository);
 
     }

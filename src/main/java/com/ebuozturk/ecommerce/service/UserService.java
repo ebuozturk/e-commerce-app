@@ -41,7 +41,7 @@ public class UserService {
         return converter.convert(userRepository.findAll());
     }
 
-    public UserDto updateUser(Long id, UpdateUserRequest request) {
+    public UserDto updateUser(String id, UpdateUserRequest request) {
         User user = findById(id);
         User updateUser = new User(user.getId(),
                 request.getFirstName(),
@@ -51,7 +51,7 @@ public class UserService {
        return converter.convert(userRepository.save(updateUser));
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(String id) {
       if(doesUserExist(id)){
           userRepository.deleteById(id);
       }
@@ -63,18 +63,18 @@ public class UserService {
         return converter.convert(findByMail(mail));
     }
 
-    public UserDto getUserById(Long id) {
+    public UserDto getUserById(String id) {
         return converter.convert(findById(id));
     }
-    public void deactivateUser(Long id){
+    public void deactivateUser(String id){
         changeActivateUser(id,false);
     }
 
-    public void activateUser(Long id) {
+    public void activateUser(String id) {
         changeActivateUser(id,true);
     }
 
-    public User changeActivateUser(Long id, Boolean isActive){
+    public User changeActivateUser(String id, Boolean isActive){
         User user = findById(id);
         User changedUser = new User(user.getId(),
                 user.getFirstName(),
@@ -86,13 +86,13 @@ public class UserService {
         return userRepository.save(changedUser);
     }
 
-    protected User findById(Long id){
+    protected User findById(String id){
         return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User is not found by following id: "+id));
     }
     protected User findByMail(String mail){
         return userRepository.findByEmail(mail).orElseThrow(()-> new UserNotFoundException("User is not found by following email: "+mail));
     }
-    protected boolean doesUserExist(Long id){
+    protected boolean doesUserExist(String id){
         return userRepository.existsById(id);
     }
 

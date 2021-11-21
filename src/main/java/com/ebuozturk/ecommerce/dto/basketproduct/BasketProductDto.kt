@@ -4,9 +4,9 @@ import com.ebuozturk.ecommerce.dto.product.ProductDto
 
 
 data class BasketProductDto @JvmOverloads constructor(
-    val id:Long,
+    val id:String,
     val quantity:Int,
-    val basketId:Long,
+    val basketId:String,
     val product: ProductDto
 ){
 

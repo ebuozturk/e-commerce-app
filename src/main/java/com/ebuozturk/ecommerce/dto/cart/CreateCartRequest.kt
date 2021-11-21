@@ -7,6 +7,6 @@ data class CreateCartRequest @JvmOverloads constructor(
     val no: String,
     val expiryDate: Date,
     val cvc: String,
-    val userId: Long
+    val userId: String
 ){
 }

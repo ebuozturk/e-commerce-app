@@ -38,10 +38,10 @@ public class AddressService {
         return converter.convert(addressRepository.save(address));
     }
 
-    public AddressDto updateAddress(final UpdateAddressRequest request){
+    public AddressDto updateAddress(final String id,final UpdateAddressRequest request){
             User user = userService.findById(request.getUserId());
-            findById(request.getId());
-            Address updateAddress = new Address(request.getId(),
+            findById(id);
+            Address updateAddress = new Address(id,
                     request.getAddressName(),
                     request.getPhoneNumber(),
                     request.getCountry(),
@@ -53,27 +53,27 @@ public class AddressService {
             return converter.convert(addressRepository.save(updateAddress));
     }
 
-    public void deleteAddress(Long id){
+    public void deleteAddress(String id){
         if(doesAddressExist(id)){
             addressRepository.deleteById(id);
         }else
             throw new AddressNotFoundException("Address is not found by following id: "+id);
     }
 
-    public AddressDto getAddressById(Long id){
+    public AddressDto getAddressById(String id){
         return converter.convert(findById(id));
     }
 
     public List<AddressDto> getAllAddresses(){
         return converter.convert(addressRepository.findAll());
     }
-    public List<AddressDto> getAddressesByUserId(Long userId){
+    public List<AddressDto> getAddressesByUserId(String userId){
         return converter.convert(addressRepository.findAddressByUser_id(userId));
     }
-    private Boolean doesAddressExist(Long id){
+    private Boolean doesAddressExist(String id){
         return addressRepository.existsById(id);
     }
-    protected Address findById(Long id){
+    protected Address findById(String id){
         return addressRepository.findById(id).orElseThrow(()-> new AddressNotFoundException("Address is not found by following id: "+id));
     }
 

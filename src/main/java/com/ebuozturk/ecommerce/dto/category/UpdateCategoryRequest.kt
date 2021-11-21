@@ -1,7 +1,6 @@
 package com.ebuozturk.ecommerce.dto.category;
 
 data class UpdateCategoryRequest @JvmOverloads constructor(
-    val id:Long,
     val name:String
 ){
 

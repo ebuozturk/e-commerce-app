@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BasketProductRepository extends JpaRepository<BasketProduct,Long> {
-   Optional<BasketProduct> findByProduct_idAndBasket_id(Long productId, Long basketId);
-   Boolean existsBasketProductById(Long id);
-   Boolean existsBasketProductByProduct_IdAndBasket_Id(Long productId,Long basketId);
+public interface BasketProductRepository extends JpaRepository<BasketProduct,String> {
+   Optional<BasketProduct> findByProduct_idAndBasket_id(String productId, String basketId);
+   Boolean existsBasketProductById(String id);
+   Boolean existsBasketProductByProduct_IdAndBasket_Id(String productId,String basketId);
 }

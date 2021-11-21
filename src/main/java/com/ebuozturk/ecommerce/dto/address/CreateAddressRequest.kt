@@ -7,6 +7,6 @@ data class CreateAddressRequest @JvmOverloads constructor(
     val city: String,
     val street: String,
     val zipCode: String,
-    val userId: Long
+    val userId: String
 ){
 }

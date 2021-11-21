@@ -1,14 +1,15 @@
 package com.ebuozturk.ecommerce.model;
 
+import org.hibernate.annotations.GenericGenerator
 import javax.persistence.*;
 
 @Entity
-
 data class BasketProduct @JvmOverloads constructor(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id:Long? = null,
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    val id:String? = "",
     @OneToOne
     @JoinColumn(name = "product_id")
     val product:Product,

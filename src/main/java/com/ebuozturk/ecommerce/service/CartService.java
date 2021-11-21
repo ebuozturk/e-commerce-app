@@ -30,10 +30,10 @@ public class CartService {
         return cartConverter.convert(cartRepository.findAll());
     }
 
-    public CartDto getCartById(final Long id){
+    public CartDto getCartById(final String id){
         return cartConverter.convert(findById(id));
     }
-    public List<CartDto> getCartsByUserId(final Long userId){
+    public List<CartDto> getCartsByUserId(final String userId){
         return cartConverter.convert(cartRepository.findByUser_id(userId));
     }
     public CartDto createCart(final CreateCartRequest request){
@@ -42,24 +42,24 @@ public class CartService {
                 request.getNo(), request.getExpiryDate(), request.getCvc(),user)));
     }
 
-    public CartDto updateCart(final UpdateCartRequest request){
+    public CartDto updateCart(final String id, final UpdateCartRequest request){
         User user = userService.findById(request.getUserId());
-        findById(request.getId());
-        return cartConverter.convert(cartRepository.save(new Cart(request.getId(),request.getName(),
+        findById(id);
+        return cartConverter.convert(cartRepository.save(new Cart(id,request.getName(),
                 request.getNo(), request.getExpiryDate(), request.getCvc(),user)));
     }
 
-    public void deleteCart(final Long id){
+    public void deleteCart(final String id){
         if(doesCartExist(id)){
             cartRepository.deleteById(id);
         }else
             throw new CartNotFoundException("Cart is not found by following id: "+id);
     }
 
-    protected Boolean doesCartExist(final Long id){
+    protected Boolean doesCartExist(final String id){
         return cartRepository.existsById(id);
     }
-    protected Cart findById(Long id){
+    protected Cart findById(String id){
         return cartRepository.findById(id).orElseThrow(()->new CartNotFoundException("Cart is not found by following id: "+id));
     }
 }
